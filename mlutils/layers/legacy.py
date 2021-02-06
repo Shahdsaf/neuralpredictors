@@ -107,8 +107,8 @@ class Gaussian2d(nn.Module):
                            if sample is True/False, overrides the model_state (i.e training or eval) and does as instructed
         """
         with torch.no_grad():
-            self.mu.clamp_(min=-1, max=1)  # at eval time, only self.mu is used so it must belong to [-1,1]
-            self.sigma.clamp_(min=0)  # sigma/variance is always a positive quantity
+            self.mu.data = torch.clamp(self.mu, min=-1, max=1)  # at eval time, only self.mu is used so it must belong to [-1,1]
+            self.sigma.data = torch.clamp(self.sigma, min=0)  # sigma/variance is always a positive quantity
 
         grid_shape = (batch_size,) + self.grid_shape[1:]
 
